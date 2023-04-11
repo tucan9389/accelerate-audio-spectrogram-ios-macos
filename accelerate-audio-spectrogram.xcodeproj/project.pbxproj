@@ -3,58 +3,36 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E30736C2372FF33000F74C3 /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3073672372FF33000F74C3 /* AudioSpectrogram.swift */; };
-		3E5E85A724BF5023003E22F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5E85A624BF5023003E22F5 /* AppDelegate.swift */; };
-		3E5E85A924BF5023003E22F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5E85A824BF5023003E22F5 /* ViewController.swift */; };
-		3E5E85AB24BF5023003E22F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5E85AA24BF5023003E22F5 /* Assets.xcassets */; };
-		3E5E85AE24BF5023003E22F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E5E85AC24BF5023003E22F5 /* Main.storyboard */; };
-		3E5E85B424BF502D003E22F5 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFEABBD23730E0E00C9AC41 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
-		3E5E85B524BF5031003E22F5 /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3073672372FF33000F74C3 /* AudioSpectrogram.swift */; };
-		3EDCF0CF2372EFE600637FFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDCF0CE2372EFE600637FFF /* AppDelegate.swift */; };
-		3EDCF0D12372EFE600637FFF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDCF0D02372EFE600637FFF /* SceneDelegate.swift */; };
-		3EDCF0D32372EFE600637FFF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDCF0D22372EFE600637FFF /* ViewController.swift */; };
-		3EDCF0D62372EFE600637FFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDCF0D42372EFE600637FFF /* Main.storyboard */; };
-		3EDCF0D82372EFE800637FFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EDCF0D72372EFE800637FFF /* Assets.xcassets */; };
-		3EDCF0DB2372EFE800637FFF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDCF0D92372EFE800637FFF /* LaunchScreen.storyboard */; };
-		3EFEABBE23730E0E00C9AC41 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFEABBD23730E0E00C9AC41 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
+		BE74801729D5DFA900C8686A /* AudioSpectrogramApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE74801629D5DFA900C8686A /* AudioSpectrogramApp.swift */; };
+		BE74801929D5DFA900C8686A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE74801829D5DFA900C8686A /* ContentView.swift */; };
+		BE74801B29D5DFAB00C8686A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE74801A29D5DFAB00C8686A /* Assets.xcassets */; };
+		BE74801E29D5DFAB00C8686A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE74801D29D5DFAB00C8686A /* Preview Assets.xcassets */; };
+		BE74802629D5E32600C8686A /* AudioSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE74802529D5E32600C8686A /* AudioSpectrogram.swift */; };
+		BE74802829D5E3A400C8686A /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE74802729D5E3A400C8686A /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */; };
+		BE74802A29D7051900C8686A /* MelSpectrogram.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE74802929D7051900C8686A /* MelSpectrogram.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3E3073672372FF33000F74C3 /* AudioSpectrogram.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
-		3E5E85A424BF5023003E22F5 /* accelerate-audio-spectrogram-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "accelerate-audio-spectrogram-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E5E85A624BF5023003E22F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3E5E85A824BF5023003E22F5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		3E5E85AA24BF5023003E22F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3E5E85AD24BF5023003E22F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		3E5E85AF24BF5023003E22F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3E5E85B024BF5023003E22F5 /* accelerate_audio_spectrogram_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = accelerate_audio_spectrogram_macOS.entitlements; sourceTree = "<group>"; };
-		3EDCF0CB2372EFE600637FFF /* accelerate-audio-spectrogram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "accelerate-audio-spectrogram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3EDCF0CE2372EFE600637FFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3EDCF0D02372EFE600637FFF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3EDCF0D22372EFE600637FFF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		3EDCF0D52372EFE600637FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		3EDCF0D72372EFE800637FFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3EDCF0DA2372EFE800637FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3EDCF0DC2372EFE800637FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3EFEABBD23730E0E00C9AC41 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
 		61B27D4DF2C017C525F12011 /* SampleCode.xcconfig */ = {isa = PBXFileReference; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
 		B05426070169D7858B022BFE /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
+		BE74801429D5DFA900C8686A /* AudioSpectrogram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioSpectrogram.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE74801629D5DFA900C8686A /* AudioSpectrogramApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSpectrogramApp.swift; sourceTree = "<group>"; };
+		BE74801829D5DFA900C8686A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BE74801A29D5DFAB00C8686A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BE74801D29D5DFAB00C8686A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BE74801F29D5DFAB00C8686A /* AudioSpectrogram.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioSpectrogram.entitlements; sourceTree = "<group>"; };
+		BE74802529D5E32600C8686A /* AudioSpectrogram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSpectrogram.swift; sourceTree = "<group>"; };
+		BE74802729D5E3A400C8686A /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift"; sourceTree = "<group>"; };
+		BE74802929D7051900C8686A /* MelSpectrogram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MelSpectrogram.swift; sourceTree = "<group>"; };
 		C5A7A3B976288CC302EA224C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3E5E85A124BF5023003E22F5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3EDCF0C82372EFE600637FFF /* Frameworks */ = {
+		BE74801129D5DFA900C8686A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -64,35 +42,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3E5E85A524BF5023003E22F5 /* accelerate-audio-spectrogram-macOS */ = {
-			isa = PBXGroup;
-			children = (
-				3E5E85A624BF5023003E22F5 /* AppDelegate.swift */,
-				3E5E85A824BF5023003E22F5 /* ViewController.swift */,
-				3E5E85AA24BF5023003E22F5 /* Assets.xcassets */,
-				3E5E85AC24BF5023003E22F5 /* Main.storyboard */,
-				3E5E85AF24BF5023003E22F5 /* Info.plist */,
-				3E5E85B024BF5023003E22F5 /* accelerate_audio_spectrogram_macOS.entitlements */,
-			);
-			path = "accelerate-audio-spectrogram-macOS";
-			sourceTree = "<group>";
-		};
-		3E5E85B624BF5271003E22F5 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				3EFEABBD23730E0E00C9AC41 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */,
-				3E3073672372FF33000F74C3 /* AudioSpectrogram.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		3EDCF0C22372EFE600637FFF = {
 			isa = PBXGroup;
 			children = (
 				C5A7A3B976288CC302EA224C /* README.md */,
-				3E5E85B624BF5271003E22F5 /* Shared */,
-				3EDCF0CD2372EFE600637FFF /* accelerate-audio-spectrogram */,
-				3E5E85A524BF5023003E22F5 /* accelerate-audio-spectrogram-macOS */,
+				BE74801529D5DFA900C8686A /* AudioSpectrogram */,
 				3EDCF0CC2372EFE600637FFF /* Products */,
 				B1394AA10D860BC3E367A1A3 /* Configuration */,
 				A4C02ECAE9F30030D138E3B7 /* LICENSE */,
@@ -102,24 +56,9 @@
 		3EDCF0CC2372EFE600637FFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3EDCF0CB2372EFE600637FFF /* accelerate-audio-spectrogram.app */,
-				3E5E85A424BF5023003E22F5 /* accelerate-audio-spectrogram-macOS.app */,
+				BE74801429D5DFA900C8686A /* AudioSpectrogram.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		3EDCF0CD2372EFE600637FFF /* accelerate-audio-spectrogram */ = {
-			isa = PBXGroup;
-			children = (
-				3EDCF0D22372EFE600637FFF /* ViewController.swift */,
-				3EDCF0CE2372EFE600637FFF /* AppDelegate.swift */,
-				3EDCF0D02372EFE600637FFF /* SceneDelegate.swift */,
-				3EDCF0D42372EFE600637FFF /* Main.storyboard */,
-				3EDCF0D72372EFE800637FFF /* Assets.xcassets */,
-				3EDCF0D92372EFE800637FFF /* LaunchScreen.storyboard */,
-				3EDCF0DC2372EFE800637FFF /* Info.plist */,
-			);
-			path = "accelerate-audio-spectrogram";
 			sourceTree = "<group>";
 		};
 		A4C02ECAE9F30030D138E3B7 /* LICENSE */ = {
@@ -139,41 +78,47 @@
 			name = Configuration;
 			sourceTree = "<group>";
 		};
+		BE74801529D5DFA900C8686A /* AudioSpectrogram */ = {
+			isa = PBXGroup;
+			children = (
+				BE74801629D5DFA900C8686A /* AudioSpectrogramApp.swift */,
+				BE74802529D5E32600C8686A /* AudioSpectrogram.swift */,
+				BE74802729D5E3A400C8686A /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift */,
+				BE74802929D7051900C8686A /* MelSpectrogram.swift */,
+				BE74801829D5DFA900C8686A /* ContentView.swift */,
+				BE74801A29D5DFAB00C8686A /* Assets.xcassets */,
+				BE74801F29D5DFAB00C8686A /* AudioSpectrogram.entitlements */,
+				BE74801C29D5DFAB00C8686A /* Preview Content */,
+			);
+			path = AudioSpectrogram;
+			sourceTree = "<group>";
+		};
+		BE74801C29D5DFAB00C8686A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BE74801D29D5DFAB00C8686A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3E5E85A324BF5023003E22F5 /* accelerate-audio-spectrogram-macOS */ = {
+		BE74801329D5DFA900C8686A /* AudioSpectrogram */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3E5E85B124BF5023003E22F5 /* Build configuration list for PBXNativeTarget "accelerate-audio-spectrogram-macOS" */;
+			buildConfigurationList = BE74802229D5DFAB00C8686A /* Build configuration list for PBXNativeTarget "AudioSpectrogram" */;
 			buildPhases = (
-				3E5E85A024BF5023003E22F5 /* Sources */,
-				3E5E85A124BF5023003E22F5 /* Frameworks */,
-				3E5E85A224BF5023003E22F5 /* Resources */,
+				BE74801029D5DFA900C8686A /* Sources */,
+				BE74801129D5DFA900C8686A /* Frameworks */,
+				BE74801229D5DFA900C8686A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "accelerate-audio-spectrogram-macOS";
-			productName = "accelerate-audio-spectrogram-macOS";
-			productReference = 3E5E85A424BF5023003E22F5 /* accelerate-audio-spectrogram-macOS.app */;
-			productType = "com.apple.product-type.application";
-		};
-		3EDCF0CA2372EFE600637FFF /* accelerate-audio-spectrogram */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3EDCF0DF2372EFE800637FFF /* Build configuration list for PBXNativeTarget "accelerate-audio-spectrogram" */;
-			buildPhases = (
-				3EDCF0C72372EFE600637FFF /* Sources */,
-				3EDCF0C82372EFE600637FFF /* Frameworks */,
-				3EDCF0C92372EFE600637FFF /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "accelerate-audio-spectrogram";
-			productName = "accelerate-audio-spectrogram";
-			productReference = 3EDCF0CB2372EFE600637FFF /* accelerate-audio-spectrogram.app */;
+			name = AudioSpectrogram;
+			productName = AudioSpectrogram;
+			productReference = BE74801429D5DFA900C8686A /* AudioSpectrogram.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -182,16 +127,14 @@
 		3EDCF0C32372EFE600637FFF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				DefaultBuildSystemTypeForWorkspace = Latest;
-				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1200;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
-					3E5E85A324BF5023003E22F5 = {
-						CreatedOnToolsVersion = 12.0;
-					};
-					3EDCF0CA2372EFE600637FFF = {
-						CreatedOnToolsVersion = 11.2;
+					BE74801329D5DFA900C8686A = {
+						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
@@ -208,138 +151,39 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3EDCF0CA2372EFE600637FFF /* accelerate-audio-spectrogram */,
-				3E5E85A324BF5023003E22F5 /* accelerate-audio-spectrogram-macOS */,
+				BE74801329D5DFA900C8686A /* AudioSpectrogram */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3E5E85A224BF5023003E22F5 /* Resources */ = {
+		BE74801229D5DFA900C8686A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E5E85AB24BF5023003E22F5 /* Assets.xcassets in Resources */,
-				3E5E85AE24BF5023003E22F5 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3EDCF0C92372EFE600637FFF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3EDCF0DB2372EFE800637FFF /* LaunchScreen.storyboard in Resources */,
-				3EDCF0D82372EFE800637FFF /* Assets.xcassets in Resources */,
-				3EDCF0D62372EFE600637FFF /* Main.storyboard in Resources */,
+				BE74801E29D5DFAB00C8686A /* Preview Assets.xcassets in Resources */,
+				BE74801B29D5DFAB00C8686A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3E5E85A024BF5023003E22F5 /* Sources */ = {
+		BE74801029D5DFA900C8686A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E5E85A924BF5023003E22F5 /* ViewController.swift in Sources */,
-				3E5E85B424BF502D003E22F5 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
-				3E5E85B524BF5031003E22F5 /* AudioSpectrogram.swift in Sources */,
-				3E5E85A724BF5023003E22F5 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3EDCF0C72372EFE600637FFF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3EDCF0D32372EFE600637FFF /* ViewController.swift in Sources */,
-				3EDCF0CF2372EFE600637FFF /* AppDelegate.swift in Sources */,
-				3E30736C2372FF33000F74C3 /* AudioSpectrogram.swift in Sources */,
-				3EDCF0D12372EFE600637FFF /* SceneDelegate.swift in Sources */,
-				3EFEABBE23730E0E00C9AC41 /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
+				BE74801929D5DFA900C8686A /* ContentView.swift in Sources */,
+				BE74802829D5E3A400C8686A /* AudioSpectrogram+AVCaptureAudioDataOutputSampleBufferDelegate.swift in Sources */,
+				BE74802A29D7051900C8686A /* MelSpectrogram.swift in Sources */,
+				BE74801729D5DFA900C8686A /* AudioSpectrogramApp.swift in Sources */,
+				BE74802629D5E32600C8686A /* AudioSpectrogram.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		3E5E85AC24BF5023003E22F5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3E5E85AD24BF5023003E22F5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		3EDCF0D42372EFE600637FFF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3EDCF0D52372EFE600637FFF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		3EDCF0D92372EFE800637FFF /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3EDCF0DA2372EFE800637FFF /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		3E5E85B224BF5023003E22F5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 61B27D4DF2C017C525F12011 /* SampleCode.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "accelerate-audio-spectrogram-macOS/accelerate_audio_spectrogram_macOS.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = "accelerate-audio-spectrogram-macOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.accelerate-audio-spectrogram-macOS${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		3E5E85B324BF5023003E22F5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 61B27D4DF2C017C525F12011 /* SampleCode.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "accelerate-audio-spectrogram-macOS/accelerate_audio_spectrogram_macOS.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = "accelerate-audio-spectrogram-macOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.accelerate-audio-spectrogram-macOS${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		3EDCF0DD2372EFE800637FFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61B27D4DF2C017C525F12011 /* SampleCode.xcconfig */;
@@ -375,6 +219,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -437,6 +282,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -458,58 +304,86 @@
 			};
 			name = Release;
 		};
-		3EDCF0E02372EFE800637FFF /* Debug */ = {
+		BE74802029D5DFAB00C8686A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61B27D4DF2C017C525F12011 /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = AudioSpectrogram/AudioSpectrogram.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"AudioSpectrogram/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "accelerate-audio-spectrogram/Info.plist";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Apple Inc. All rights reserved.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Analyse audio";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.accelerate-audio-spectrogram${SAMPLE_CODE_DISAMBIGUATOR}";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AudioSpectrogram${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		3EDCF0E12372EFE800637FFF /* Release */ = {
+		BE74802129D5DFAB00C8686A /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61B27D4DF2C017C525F12011 /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = AudioSpectrogram/AudioSpectrogram.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"AudioSpectrogram/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "accelerate-audio-spectrogram/Info.plist";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Apple Inc. All rights reserved.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Analyse audio";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.accelerate-audio-spectrogram${SAMPLE_CODE_DISAMBIGUATOR}";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.AudioSpectrogram${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3E5E85B124BF5023003E22F5 /* Build configuration list for PBXNativeTarget "accelerate-audio-spectrogram-macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3E5E85B224BF5023003E22F5 /* Debug */,
-				3E5E85B324BF5023003E22F5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		3EDCF0C62372EFE600637FFF /* Build configuration list for PBXProject "accelerate-audio-spectrogram" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -519,11 +393,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3EDCF0DF2372EFE800637FFF /* Build configuration list for PBXNativeTarget "accelerate-audio-spectrogram" */ = {
+		BE74802229D5DFAB00C8686A /* Build configuration list for PBXNativeTarget "AudioSpectrogram" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3EDCF0E02372EFE800637FFF /* Debug */,
-				3EDCF0E12372EFE800637FFF /* Release */,
+				BE74802029D5DFAB00C8686A /* Debug */,
+				BE74802129D5DFAB00C8686A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

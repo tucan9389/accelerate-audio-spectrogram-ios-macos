@@ -1,16 +1,16 @@
-# Visualizing Sound as an Audio Spectrogram
+# Visualizing sound as an audio spectrogram
 
 Share image data between vDSP and vImage to visualize audio that a device microphone captures.
 
 ## Overview
 
-This sample code project captures audio from a macOS or iOS device's microphone and uses a combination of routines from vImage and vDSP to render the audio as an _audio spectrogram_. Audio spectrograms visualize audio in 2D using one axis to represent time and the other axis to represent frequency. Color represents the amplitude of the time-frequency pair. 
+This sample code project captures audio from a macOS device's microphone and uses a combination of routines from vImage and vDSP to render the audio as an _audio spectrogram_. Audio spectrograms visualize audio in 2D using one axis to represent time and the other axis to represent frequency. Color represents the amplitude of the time-frequency pair. 
 
-Audio spectrograms have applications in signal analysis. For example, a spectrogram can help identify audio issues, such as low- or high-frequency noise, or short-impulse noises like clicks and pops, that may not be immediately obvious to the human ear. Spectrograms can also assist in audio classification using neural networks in applications, such as bird song and speech recognition.
+You can use audio spectrograms for signal analysis. For example, a spectrogram can help identify audio issues, such as low- or high-frequency noise, or short-impulse noises like clicks and pops that may not be immediately obvious to the human ear. Spectrograms can also assist in audio classification using neural networks for tasks such as bird song and speech recognition.
 
-The image below shows the audio spectrogram that this sample created from [GarageBand](https://www.apple.com/ios/garageband/)'s _Stargate Opening_ sound effect. The horizontal axis represents time, and the vertical axis represents frequency. The sample calculates the color that represents amplitude using procedurally generated false-color lookup tables.
+The image below shows the audio spectrogram that this sample created from the _Stargate Opening_ sound effect in [GarageBand](https://www.apple.com/ios/garageband/). The horizontal axis represents time, and the vertical axis represents frequency. The sample calculates the color that represents amplitude using a procedurally generated multidimensional lookup table.
 
-![Screenshot of an audio spectrogram. The spectrogram shows a series of vertically stacked diagonal lines that rise and fall, and represent the rising and falling tones of the sampled sound effect.](Documentation/stargateOpening.jpeg)
+![A screenshot of an audio spectrogram showing a series of vertically stacked diagonal lines that rise and fall, representing the tones of the sampled sound effect.](Documentation/stargateOpening.jpeg)
 
 The sample creates an audio spectrogram by performing a discrete cosine transform (DCT) on audio samples. The DCT computes the frequency components of an audio signal and represents the audio as a series of amplitudes at the component frequencies. DCTs are related to Fourier transforms, but use real values rather than complex values. You can learn more about Fourier transforms at [_Finding the Component Frequencies in a Composite Sine Wave_](https://developer.apple.com/documentation/accelerate/finding_the_component_frequencies_in_a_composite_sine_wave).
 
@@ -20,129 +20,49 @@ For each sample buffer that AVFoundation provides, the app appends that data to 
 
 The code appends the newly generated frequency-domain values to `frequencyDomainValues` and discards `sampleCount` elements from the beginning. It is this appending and discarding of data that generates the scrolling effect.
 
-A vImage buffer, `planarImageBuffer`, shares data with `frequencyDomainValues` and the code uses this as a planar source to populate an interleaved ARGB vImage buffer, `rgbImageBuffer`. Lookup tables colorize `rgbImageBuffer`, and the app rotates the RGB image buffer, writing the result to  `rotatedImageBuffer`, to display the image in the user interface.
+A vImage pixel buffer, `planarImageBuffer`, shares data with `frequencyDomainValues` and the multidimensional lookup table uses that as a planar source to populate three additional planar buffers that represent the red, green, and blue channels of the spectrogram image. The sample app interleaves the red, green, and blue planar buffers to display the RGB spectrogram image.
 
-Before exploring the code, build and run the app to familiarize yourself with the different visual results the app generates from different sounds.
+Before exploring the code, build and run the app to familiarize yourself with the different visual results it generates from different sounds.
 
-Note that because Xcode doesn’t have access to the device microphone, this sample won’t work in Simulator.
+## Define the spectrogram size
 
-## Define the Spectrogram Size
-
-The sample defines two constants that specify the size of the spectrogram:
+The sample defines two constants that specify the size of the spectrogram.
 
 * `sampleCount` defines the number of individual samples that pass to the DCT, and the resolution of the displayed frequencies. 
 * `bufferCount` controls the number of displayed buffers. 
 
-The sample also specifies a hop size that controls the overlap between frames of data and ensures that the spectrogram doesn't lose any audio information at the start and end of each sample: 
+The sample also specifies a hop size that controls the overlap between frames of data and ensures that the spectrogram doesn't lose any audio information at the start and end of each sample.
 
 ``` swift
-/// Samples per frame — the height of the spectrogram.
+/// The number of samples per frame — the height of the spectrogram.
 static let sampleCount = 1024
 
-/// Number of displayed buffers — the width of the spectrogram.
+/// The number of displayed buffers — the width of the spectrogram.
 static let bufferCount = 768
 
 /// Determines the overlap between frames.
 static let hopCount = 512
 ```
 
-The app displays the spectrogram in a [`CALayer`](https://developer.apple.com/documentation/quartzcore/calayer) with its [`contentsGravity`](https://developer.apple.com/documentation/quartzcore/calayer/1410872-contentsgravity) set to [`resize`](https://developer.apple.com/documentation/quartzcore/calayercontentsgravity/1410811-resize) so that the rendered image conforms to the device's screen proportions.
-
-## Configure the Capture Session
-
-The sample configures the [`AVCaptureSession`](https://developer.apple.com/documentation/avfoundation/avcapturesession) instance between calls to [`beginConfiguration`](https://developer.apple.com/documentation/avfoundation/avcapturesession/1389174-beginconfiguration) and [`commitConfiguration`](https://developer.apple.com/documentation/avfoundation/avcapturesession/1388173-commitconfiguration). 
-
-The following code attaches the device's built-in microphone to the capture session:
-
-``` swift
-guard
-    let microphone = AVCaptureDevice.default(.builtInMicrophone,
-                                             for: .audio,
-                                             position: .unspecified),
-    let microphoneInput = try? AVCaptureDeviceInput(device: microphone) else {
-        fatalError("Can't create microphone.")
-}
-
-if captureSession.canAddInput(microphoneInput) {
-    captureSession.addInput(microphoneInput)
-}
-```
-
-After adding an [`AVCaptureAudioDataOutput`](https://developer.apple.com/documentation/avfoundation/avcaptureaudiodataoutput) instance to the capture session and specifying the sample buffer delegate, the app is ready to capture and process audio buffer samples. The sample calls [`startRunning()`](https://developer.apple.com/documentation/avfoundation/avcapturesession/1388185-startrunning) on the capture session to start the flow of data from the microphone inputs to the output:
-
-``` swift
-self.captureSession.startRunning()
-```
-
-## Capture the Audio
-
-For each captured audio sample buffer, AVFoundation calls [`captureOutput(_:didOutput:from:)`](https://developer.apple.com/documentation/avfoundation/avcaptureaudiodataoutputsamplebufferdelegate/1386039-captureoutput).
-
-The following code uses [`CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer`](https://developer.apple.com/documentation/coremedia/1489191-cmsamplebuffergetaudiobufferlist) to acquire the data:
-
-``` swift
-var audioBufferList = AudioBufferList()
-var blockBuffer: CMBlockBuffer?
-
-CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(
-    sampleBuffer,
-    bufferListSizeNeededOut: nil,
-    bufferListOut: &audioBufferList,
-    bufferListSize: MemoryLayout.stride(ofValue: audioBufferList),
-    blockBufferAllocator: nil,
-    blockBufferMemoryAllocator: nil,
-    flags: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment,
-    blockBufferOut: &blockBuffer)
-
-guard let data = audioBufferList.mBuffers.mData else {
-    return
-}
-```
-
-On return, `data` is a pointer to the raw audio data.
-
-Because the audio spectrogram code requires exactly `sampleCount` (which the app defines as 1024) samples, but audio sample buffers from AVFoundation may not always contain exactly 1024 samples, the app adds the contents of each audio sample buffer to `rawAudioData`. The following code creates an array from `data` and appends it to  `rawAudioData`:
-
-``` swift
-let actualSampleCount = CMSampleBufferGetNumSamples(sampleBuffer)
-
-let ptr = data.bindMemory(to: Int16.self, capacity: actualSampleCount)
-let buf = UnsafeBufferPointer(start: ptr, count: actualSampleCount)
-
-rawAudioData.append(contentsOf: Array(buf))
-```
-
-After appending the data, the app passes the first `sampleCount` of raw audio data to the `processData(values:)` function, and removes the first `hopCount` elements from  `rawAudioData`. By removing fewer elements than each step processes, the rendered frames of data overlap, ensuring no loss of audio data:
-
-``` swift
-while self.rawAudioData.count >= AudioSpectrogram.sampleCount {
-    let dataToProcess = Array(self.rawAudioData[0 ..< AudioSpectrogram.sampleCount])
-    self.rawAudioData.removeFirst(AudioSpectrogram.hopCount)
-    self.processData(values: dataToProcess)
-}
-
-createAudioSpectrogram()
-```
-
-## Process the Audio Data 
+## Process the audio data 
 
 The `processData(values:)` function processes the first `sampleCount` samples from  `rawAudioData` by performing the DCT and appending the frequency-domain representation data to the array that creates the vImage buffer and, ultimately, the audio spectrogram image.
 
-To avoid recreating working arrays with each iteration, the following code creates reusable buffers that  `processData(values:)` uses:
+To avoid recreating working arrays with each iteration, the following code creates reusable buffers that `processData(values:)` uses:
 
 ``` swift
-/// A reusable array that contains the current frame of time domain audio data as single-precision
+/// A reusable array that contains the current frame of time-domain audio data as single-precision
 /// values.
 var timeDomainBuffer = [Float](repeating: 0,
                                count: sampleCount)
 
-/// A resuable array that contains the frequency domain representation of the current frame of
+/// A resuable array that contains the frequency-domain representation of the current frame of
 /// audio data.
 var frequencyDomainBuffer = [Float](repeating: 0,
                                     count: sampleCount)
 ```
 
-The sample calls [`integerToFloatingPoint(_:floatingPointType:)`](https://developer.apple.com/documentation/accelerate/vdsp/3240989-integertofloatingpoint) to convert 16-bit integer audio samples to single-precision floating-point values:
+The sample calls [`convertElements(of:to:)`](https://developer.apple.com/documentation/accelerate/vdsp/3240884-convertelements) to convert 16-bit integer audio samples to single-precision floating-point values.
 
 ``` swift
 vDSP.convertElements(of: values,
@@ -171,170 +91,223 @@ forwardDCT.transform(timeDomainBuffer,
                      result: &frequencyDomainBuffer)
 ```
 
-After the sample performs the forward transform, it converts the frequency-domain values to decibels so that the spectrogram colors are roughly proportional to perceived loudness:
+## Define the pseudocolor multidimensional lookup tables
+
+The following code creates a [vImage.MultidimensionalLookupTable](https://developer.apple.com/documentation/accelerate/vimage/multidimensionallookuptable) that the sample uses to create the pseudocolor rendering. The function returns dark blue for low values, graduates through red, and returns full-brightness green for `1.0`.
 
 ``` swift
-vDSP.absolute(frequencyDomainBuffer,
-              result: &frequencyDomainBuffer)
-
-vDSP.convert(amplitude: frequencyDomainBuffer,
-             toDecibels: &frequencyDomainBuffer,
-             zeroReference: Float(AudioSpectrogram.sampleCount))
+static var multidimensionalLookupTable: vImage.MultidimensionalLookupTable = {
+    let entriesPerChannel = UInt8(32)
+    let srcChannelCount = 1
+    let destChannelCount = 3
+    
+    let lookupTableElementCount = Int(pow(Float(entriesPerChannel),
+                                          Float(srcChannelCount))) *
+    Int(destChannelCount)
+    
+    let tableData = [UInt16](unsafeUninitializedCapacity: lookupTableElementCount) {
+        buffer, count in
+        
+        /// Supply the samples in the range `0...65535`. The transform function
+        /// interpolates these to the range `0...1`.
+        let multiplier = CGFloat(UInt16.max)
+        var bufferIndex = 0
+        
+        for gray in ( 0 ..< entriesPerChannel) {
+            /// Create normalized red, green, and blue values in the range `0...1`.
+            let normalizedValue = CGFloat(gray) / CGFloat(entriesPerChannel - 1)
+          
+            // Define `hue` that's blue at `0.0` to red at `1.0`.
+            let hue = 0.6666 - (0.6666 * normalizedValue)
+            let brightness = sqrt(normalizedValue)
+            
+            let color = NSColor(hue: hue,
+                                saturation: 1,
+                                brightness: brightness,
+                                alpha: 1)
+            
+            var red = CGFloat()
+            var green = CGFloat()
+            var blue = CGFloat()
+            
+            color.getRed(&red,
+                         green: &green,
+                         blue: &blue,
+                         alpha: nil)
+ 
+            buffer[ bufferIndex ] = UInt16(green * multiplier)
+            bufferIndex += 1
+            buffer[ bufferIndex ] = UInt16(red * multiplier)
+            bufferIndex += 1
+            buffer[ bufferIndex ] = UInt16(blue * multiplier)
+            bufferIndex += 1
+        }
+        
+        count = lookupTableElementCount
+    }
+    
+    let entryCountPerSourceChannel = [UInt8](repeating: entriesPerChannel,
+                                             count: srcChannelCount)
+    
+    return vImage.MultidimensionalLookupTable(entryCountPerSourceChannel: entryCountPerSourceChannel,
+                                              destinationChannelCount: destChannelCount,
+                                              data: tableData)
+}()
 ```
 
-## Define the False-Color Lookup Tables
-
-The following function creates the values for the lookup tables that the sample uses to create the false-color rendering. The function returns dark blue for low values, graduates through red, and returns full-brightness green for `255`:
-
-``` swift
-#if os(iOS)
-typealias Color = UIColor
-#else
-typealias Color = NSColor
-#endif
-
-static func brgValue(from value: Pixel_8) -> (red: Pixel_8,
-                                              green: Pixel_8,
-                                              blue: Pixel_8) {
-    let normalizedValue = CGFloat(value) / 255
-    
-    // Define `hue` that's blue at `0.0` to red at `1.0`.
-    let hue = 0.6666 - (0.6666 * normalizedValue)
-    let brightness = sqrt(normalizedValue)
-
-    let color = Color(hue: hue,
-                      saturation: 1,
-                      brightness: brightness,
-                      alpha: 1)
-    
-    var red = CGFloat()
-    var green = CGFloat()
-    var blue = CGFloat()
-    
-    color.getRed(&red,
-                 green: &green,
-                 blue: &blue,
-                 alpha: nil)
-    
-    return (Pixel_8(green * 255),
-            Pixel_8(red * 255),
-            Pixel_8(blue * 255))
-}
-```
-
-The following image shows the color that the function returns with inputs from `0` through `255`:
+The following image shows the color that the function returns with inputs from `0.0` through `1.0`:
 
 ![Image of a horizontal gradient that transitions from dark blue, through red, to green.](Documentation/brgColormap.png)
 
-The sample calls the `static AudioSpectrogram.brgValue(from:)` function to populate lookup tables for the red, green, and blue channels. Because the final output is 8 bits per channel, the lookup tables each contain 256 [`Pixel_8`](https://developer.apple.com/documentation/accelerate/pixel_8) values:
+## Prepare the vImage pixel buffers to display the audio spectrogram
+
+To display the audio spectrogram, the app creates a temporary planar [`vImage.PixelBuffer`](https://developer.apple.com/documentation/accelerate/vimage/pixelbuffer) that shares memory with the frequency-domain values. 
+
+The following code applies the multidimensional lookup table to the grayscale information in the temporary buffer to populate three planar buffers that represent the red, green, and blue channels. Because the vImage functions that generate a Core Graphics image from a pixel buffer require an interleaved buffer, the code interleaves the red, green, and blue buffer into `rgbImageBuffer`.
 
 ``` swift
-static var redTable: [Pixel_8] = (0 ... 255).map {
-    return brgValue(from: $0).red
-}
-
-static var greenTable: [Pixel_8] = (0 ... 255).map {
-    return brgValue(from: $0).green
-}
-
-static var blueTable: [Pixel_8] = (0 ... 255).map {
-    return brgValue(from: $0).blue
-}
-```
-
-## Prepare the vImage Buffers to Display the Audio Spectrogram
-
-The app uses two vImage buffers to store and display the audio spectrogram: 
-
-* A working buffer that's `sampleCount` wide by  `bufferCount` high, and allows the code to easily add and remove `sampleCount` elements.
-* A buffer for displaying the spectrogram that's `bufferCount` wide by `sampleCount` high, and allows for the horizontal rending and scrolling of the spectrogram.
-
-The following code creates a Core Graphics image format structure that describes the output image: 
-
-``` swift
-var rgbImageFormat: vImage_CGImageFormat = {
-    guard let format = vImage_CGImageFormat(
-            bitsPerComponent: 8,
-            bitsPerPixel: 8 * 4,
-            colorSpace: CGColorSpaceCreateDeviceRGB(),
-            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.first.rawValue),
-            renderingIntent: .defaultIntent) else {
-        fatalError("Can't create image format.")
+func makeAudioSpectrogramImage() -> CGImage {
+    frequencyDomainValues.withUnsafeMutableBufferPointer {
+        
+        let planarImageBuffer = vImage.PixelBuffer(
+            data: $0.baseAddress!,
+            width: AudioSpectrogram.sampleCount,
+            height: AudioSpectrogram.bufferCount,
+            byteCountPerRow: AudioSpectrogram.sampleCount * MemoryLayout<Float>.stride,
+            pixelFormat: vImage.PlanarF.self)
+        
+        AudioSpectrogram.multidimensionalLookupTable.apply(
+            sources: [planarImageBuffer],
+            destinations: [redBuffer, greenBuffer, blueBuffer],
+            interpolation: .half)
+        
+        rgbImageBuffer.interleave(
+            planarSourceBuffers: [redBuffer, greenBuffer, blueBuffer])
     }
     
-    return format
-}()
-```
-
-The sample uses the Core Graphics image format to initialize two buffers that contain the audio spectrogram. `rgbImageBuffer` is the internal, vertically oriented representation, and `rotatedImageBuffer` is the horizontally oriented representation that displays in the user interface:
-
-``` swift
-/// RGB vImage buffer that contains a vertical representation of the audio spectrogram.
-lazy var rgbImageBuffer: vImage_Buffer = {
-    guard let buffer = try? vImage_Buffer(width: AudioSpectrogram.sampleCount,
-                                          height: AudioSpectrogram.bufferCount,
-                                          bitsPerPixel: rgbImageFormat.bitsPerPixel) else {
-        fatalError("Unable to initialize image buffer.")
-    }
-    return buffer
-}()
-
-/// RGB vImage buffer that contains a horizontal representation of the audio spectrogram.
-lazy var rotatedImageBuffer: vImage_Buffer = {
-    guard let buffer = try? vImage_Buffer(width: AudioSpectrogram.bufferCount,
-                                          height: AudioSpectrogram.sampleCount,
-                                          bitsPerPixel: rgbImageFormat.bitsPerPixel)  else {
-        fatalError("Unable to initialize rotated image buffer.")
-    }
-    return buffer
-}()
-```
-
-## Create the Audio Spectrogram
-
-The [`vImageConvert_PlanarFToARGB8888`](https://developer.apple.com/documentation/accelerate/1533216-vimageconvert_planarftoargb8888) function populates an unsigned 8-bit integer interleaved vImage buffer with the single-precision frequency-domain values. 
-
-For the color channels, the sample specifies the minimum as `0` and the maximum as the maximum possible value in `rawAudioData` converted to decibels. For the alpha channel, set the maximum and minimum values to `1.0`. When `vImageConvert_PlanarFToARGB8888` receives the same value for maximum and minimum, it treats that value as a constant. Note that the function requires a valid `vImage_Buffer` pointer for that channel, but the values in that buffer are unimportant:
-
-``` swift
-let maxFloats: [Float] = [255, maxFloat, maxFloat, maxFloat]
-let minFloats: [Float] = [255, 0, 0, 0]
-
-frequencyDomainValues.withUnsafeMutableBufferPointer {
-    var planarImageBuffer = vImage_Buffer(data: $0.baseAddress!,
-                                          height: vImagePixelCount(AudioSpectrogram.bufferCount),
-                                          width: vImagePixelCount(AudioSpectrogram.sampleCount),
-                                          rowBytes: AudioSpectrogram.sampleCount * MemoryLayout<Float>.stride)
-    
-    vImageConvert_PlanarFToARGB8888(&planarImageBuffer,
-                                    &planarImageBuffer, &planarImageBuffer, &planarImageBuffer,
-                                    &rgbImageBuffer,
-                                    maxFloats, minFloats,
-                                    vImage_Flags(kvImageNoFlags))
+    return rgbImageBuffer.makeCGImage(cgImageFormat: rgbImageFormat) ?? AudioSpectrogram.emptyCGImage
 }
 ```
 
-The following code transforms the color buffer using the lookup tables:
+## Compute the mel spectrum using linear algebra
+
+In addition to the linear audio spectrogram, the sample app provides a mode to render audio as a mel spectrogram. The `computeMelSpectrogram(values:)` function rescales the frequency-domain buffer from a linear scale to the mel scale.
+
+The mel scale is a scale of pitches that human hearing generally perceives to be equidistant from each other. As frequency increases, the interval, in hertz, between mel scale values (or simply _mels_) increases. The name _mel_ derives from _melody_ and indicates that the scale is based on the comparison between pitches. The mel spectrogram remaps the values in hertz to the mel scale.
+
+The linear audio spectrogram is ideally suited for use cases where all frequencies have equal importance, while mel spectrograms are better suited when modeling human hearing perception. Mel spectrogram data is also suited for use in audio classification.
+
+A mel spectrogram differs from a linearly scaled audio spectrogram in two ways:
+
+* A mel spectrogram logarithmically renders frequencies above a certain threshold (the _corner frequency_). For example, in the linearly scaled spectrogram, the vertical space between 1000 Hz and 2000 Hz is half of the vertical space between 2000 Hz and 4000 Hz. In the mel spectrogram, the space between those ranges is approximately the same. This scaling is analogous to human hearing, where it's easier to distinguish between similar low frequency sounds than similar high frequency sounds.
+*  A mel spectrogram computes its output by multiplying frequency-domain values by a filter bank. 
+
+The sample builds the filter bank from a series of overlapping triangular windows at a series of evenly spaced mels. The number of elements in a single frame in a mel spectrogram is equal to the number of filters in the filter bank.
+
+The following image shows the linear audio spectrogram and the mel spectrogram of the same linearly increasing and decreasing tone. The tone starts at 20 Hz, rises to 22,050 Hz, and drops back to 20 Hz. The image shows that the audio spectrogram represents the objective signal, but the mel spectrogram mirrors human perception, that is, the curve flattens and indicates reduced differentiation between high frequencies.
+
+![A pair of images showing a linear audio spectrogram on the left and a mel audio spectrogram on the right. The shape of the linear spectrogram resembles a triangle. The shape of the mel spectrogram resembles a dome.](Documentation/linear_vs_mel.png)
+
+In this case, the mel spectrogram consists of 40 filters, so the spectrogram has a lower vertical resolution than the linear spectrogram.
+
+
+## Define the mel frequencies
+
+The sample creates an array, `melFilterBankFrequencies`, that contains the indices of `frequencyDomainBuffer` that represent the mel scale frequencies. For example, if the Nyquist frequency is 22,050 Hz and `frequencyDomainBuffer` contains 1024 elements, a value of 512 in `melFilterBankFrequencies` represents 11,025 Hz.
+
+
+The `static MelSpectrogram.populateMelFilterBankFrequencies(_:maximumFrequency:)` function populates `melFilterBankFrequencies` with the logarithmically increasing indices based on the linearly interpolated increasing mel frequencies in  `melFilterBankFrequencies`.
 
 ``` swift
-vImageTableLookUp_ARGB8888(&rgbImageBuffer, &rgbImageBuffer,
-                           nil,
-                           &AudioSpectrogram.redTable,
-                           &AudioSpectrogram.greenTable,
-                           &AudioSpectrogram.blueTable,
-                           vImage_Flags(kvImageNoFlags))
+func frequencyToMel(_ frequency: Float) -> Float {
+    return 2595 * log10(1 + (frequency / 700))
+}
+
+func melToFrequency(_ mel: Float) -> Float {
+    return 700 * (pow(10, mel / 2595) - 1)
+}
+
+let minMel = frequencyToMel(frequencyRange.lowerBound)
+let maxMel = frequencyToMel(frequencyRange.upperBound)
+let bankWidth = (maxMel - minMel) / Float(filterBankCount - 1)
+
+let melFilterBankFrequencies: [Int] = stride(from: minMel, to: maxMel, by: bankWidth).map {
+    let mel = Float($0)
+    let frequency = melToFrequency(mel)
+    
+    return Int((frequency / frequencyRange.upperBound) * Float(sampleCount))
+}
 ```
 
-The image below shows the audio spectrogram of GarageBand's _Pitch Fall_ sound effect before and after applying the lookup table transform:
+The following line chart shows 16 generated mel frequencies as squares and the corresponding frequencies in hertz as circles: 
 
-![Two images of audio spectrograms. The first image shows a monochrome spectrogram, the second image shows a spectrogram rendered with false-color.](Documentation/lookupTableEffect_2x.png)
+![A line chart with a vertical scale measured in hertz and a range of zero to 20,000. The chart contains two lines. A straight line represents 16 mel frequencies, and a curved line below the mel line represents the corresponding frequency in hertz.](Documentation/accelerate-mel-hertz_2x.png)
 
-The sample rotates the color buffer by 90º so that the audio spectrogram scrolls horizontally:
+## Create the filter bank
+
+The sample creates the filter bank matrix with `filterBankCount` rows and `sampleCount` columns. Each row contains a triangular window that starts at the previous frequency, peaks at the current frequency, and ends at the next frequency. For example, the following graphic illustrates the values for a filter bank that contains 16 values:
+
+![A graph of 16 stacked horizontal lines, each with a small triangle that indicates nonzero entries. The triangle of the top line is narrow and on the left. Each subsequent line has a slightly wider triangle, shifted to the right.](Documentation/accelerate-filter-bank_2x.png)
+
+The `static MelSpectrogram.populateFilterBank(_:melFilterBankFrequencies:)` function populates the `filterBank` array. The function uses [`vDSP_vgen`](https://developer.apple.com/documentation/accelerate/1449703-vdsp_vgen) to generate the attack and decay phases of each triangle.
 
 ``` swift
-vImageRotate90_ARGB8888(&rgbImageBuffer,
-                        &rotatedImageBuffer,
-                        UInt8(kRotate90DegreesCounterClockwise),
-                        [UInt8()],
-                        vImage_Flags(kvImageNoFlags))
+for i in 0 ..< melFilterBankFrequencies.count {
+    
+    let row = i * sampleCount
+    
+    let startFrequency = melFilterBankFrequencies[ max(0, i - 1) ]
+    let centerFrequency = melFilterBankFrequencies[ i ]
+    let endFrequency = (i + 1) < melFilterBankFrequencies.count ?
+    melFilterBankFrequencies[ i + 1 ] : sampleCount - 1
+    
+    let attackWidth = centerFrequency - startFrequency + 1
+    let decayWidth = endFrequency - centerFrequency + 1
+    
+    // Create the attack phase of the triangle.
+    if attackWidth > 0 {
+        vDSP_vgen(&endValue,
+                  &baseValue,
+                  filterBank.baseAddress!.advanced(by: row + startFrequency),
+                  1,
+                  vDSP_Length(attackWidth))
+    }
+    
+    // Create the decay phase of the triangle.
+    if decayWidth > 0 {
+        vDSP_vgen(&baseValue,
+                  &endValue,
+                  filterBank.baseAddress!.advanced(by: row + centerFrequency),
+                  1,
+                  vDSP_Length(decayWidth))
+    }
+}
 ```
+
+## Use a matrix multiply to compute the mel spectrogram
+
+The sample performs a matrix multiply of each frame of frequency-domain data with the filter bank to produce a frame of mel-scaled values.
+
+The following image shows the matrix multiply. The frame of 1024 frequency-domain values is multiplied by 16 overlapping triangular windows, returning the 16-element mel-scaled values.
+
+![A diagram showing the matrix multiply of the 1024-element frequency-domain array on the left multiplied by the filter bank in the center. The result is the 16-element mel spectrogram on the right.](Documentation/accelerate-matrix-multiply_2x.png)
+
+The following code uses [`cblas_sgemm`](https://developer.apple.com/documentation/accelerate/1513264-cblas_sgemm) to perform the matrix multiply:
+
+``` swift
+values.withUnsafeBufferPointer { frequencyDomainValuesPtr in
+    cblas_sgemm(CblasRowMajor,
+                CblasTrans, CblasTrans,
+                1,
+                Int32(MelSpectrogram.filterBankCount),
+                Int32(sampleCount),
+                1,
+                frequencyDomainValuesPtr.baseAddress,
+                1,
+                filterBank.baseAddress, Int32(sampleCount),
+                0,
+                sgemmResult.baseAddress, Int32(MelSpectrogram.filterBankCount))
+}
+```
+
+On return, the sample adds the result of the matrix multiply in `sgemmResult` to the `melSpectrumValues` that contain `bufferCount * filterBankCount` elements. 
