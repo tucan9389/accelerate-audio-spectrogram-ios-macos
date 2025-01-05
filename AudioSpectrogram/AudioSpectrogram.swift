@@ -198,72 +198,14 @@ class AudioSpectrogram: NSObject, ObservableObject {
     }
 }
 
-import Cocoa
+#if os(iOS)
+import UIKit
+#else
+import AppKit
+#endif
 
 // MARK: Utility functions
 extension AudioSpectrogram {
-    
-    /// Returns the RGB values from a blue -> red -> green color map for a specified value.
-    ///
-    /// Values near zero return dark blue, `0.5` returns red, and `1.0` returns full-brightness green.
-    static var multidimensionalLookupTable: vImage.MultidimensionalLookupTable = {
-        let entriesPerChannel = UInt8(32)
-        let srcChannelCount = 1
-        let destChannelCount = 3
-        
-        let lookupTableElementCount = Int(pow(Float(entriesPerChannel),
-                                              Float(srcChannelCount))) *
-        Int(destChannelCount)
-        
-        let tableData = [UInt16](unsafeUninitializedCapacity: lookupTableElementCount) {
-            buffer, count in
-            
-            /// Supply the samples in the range `0...65535`. The transform function
-            /// interpolates these to the range `0...1`.
-            let multiplier = CGFloat(UInt16.max)
-            var bufferIndex = 0
-            
-            for gray in ( 0 ..< entriesPerChannel) {
-                /// Create normalized red, green, and blue values in the range `0...1`.
-                let normalizedValue = CGFloat(gray) / CGFloat(entriesPerChannel - 1)
-              
-                // Define `hue` that's blue at `0.0` to red at `1.0`.
-                let hue = 0.6666 - (0.6666 * normalizedValue)
-                let brightness = sqrt(normalizedValue)
-                
-                let color = NSColor(hue: hue,
-                                    saturation: 1,
-                                    brightness: brightness,
-                                    alpha: 1)
-                
-                var red = CGFloat()
-                var green = CGFloat()
-                var blue = CGFloat()
-                
-                color.getRed(&red,
-                             green: &green,
-                             blue: &blue,
-                             alpha: nil)
-     
-                buffer[ bufferIndex ] = UInt16(green * multiplier)
-                bufferIndex += 1
-                buffer[ bufferIndex ] = UInt16(red * multiplier)
-                bufferIndex += 1
-                buffer[ bufferIndex ] = UInt16(blue * multiplier)
-                bufferIndex += 1
-            }
-            
-            count = lookupTableElementCount
-        }
-        
-        let entryCountPerSourceChannel = [UInt8](repeating: entriesPerChannel,
-                                                 count: srcChannelCount)
-        
-        return vImage.MultidimensionalLookupTable(entryCountPerSourceChannel: entryCountPerSourceChannel,
-                                                  destinationChannelCount: destChannelCount,
-                                                  data: tableData)
-    }()
-    
     /// A 1x1 Core Graphics image.
     static var emptyCGImage: CGImage = {
         let buffer = vImage.PixelBuffer(
@@ -280,4 +222,43 @@ extension AudioSpectrogram {
         
         return buffer.makeCGImage(cgImageFormat: fmt!)!
     }()
+}
+
+extension AudioSpectrogram {
+    /// Namespace for color-related functionality
+    enum ColorUtility {
+        /// Platform-agnostic RGB color values
+        struct RGBValues {
+            let red: CGFloat
+            let green: CGFloat
+            let blue: CGFloat
+            
+            var tuple: (red: CGFloat, green: CGFloat, blue: CGFloat) {
+                (red, green, blue)
+            }
+        }
+        
+        /// Platform-specific color type
+        #if os(iOS)
+        typealias PlatformColor = UIColor
+        #else
+        typealias PlatformColor = NSColor
+        #endif
+        
+        /// Creates RGB values from HSB color space
+        static func rgbFrom(hue: CGFloat, saturation: CGFloat, brightness: CGFloat) -> RGBValues {
+            let color = PlatformColor(hue: hue,
+                                    saturation: saturation,
+                                    brightness: brightness,
+                                    alpha: 1.0)
+            
+            var red: CGFloat = 0
+            var green: CGFloat = 0
+            var blue: CGFloat = 0
+            
+            color.getRed(&red, green: &green, blue: &blue, alpha: nil)
+            
+            return RGBValues(red: red, green: green, blue: blue)
+        }
+    }
 }
